@@ -21,7 +21,7 @@
 - get()&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*//the same as map.getCenter()*
 - zoom(i)&nbsp;&nbsp;&nbsp;&nbsp;*//the same as map.setZoom(i)*
 - me()&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*//the same as locate()*
-- cls()&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*//the same as console.clear()*
+- cls()&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*//the same as console.clear()*
 
 --------------------------------------------------
 
