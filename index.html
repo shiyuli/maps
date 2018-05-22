@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Maps</title>
+    <style>
+       #map {
+        height: 100%;
+       }
+       html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #panel {
+        display: block;
+        position: absolute;
+        bottom: 3px;
+        left: 5px;
+        z-index: 5;
+        width: 500px;
+        height: 200px;
+        background-color: #fff;
+        padding: 2px;
+        border: 1px solid #999;
+        text-align: center;
+        font-family: 'Roboto','sans-serif';
+      }
+      #panel-close {
+        display: block;
+        position: relative;
+        top: 2px;
+        left: 2px;
+        z-index: 5;
+        width: 35px;
+        height: 20px;
+        background-color: #fff;
+        border: 1px solid #999;
+        text-align: center;
+        font-family: 'Roboto','sans-serif';
+      }
+      #panel-show {
+        display: block;
+        position: absolute;
+        bottom: 3px;
+        left: 5px;
+        z-index: 5;
+        width: 70px;
+        height: 25px;
+        background-color: #fff;
+        border: 1px solid #999;
+        text-align: center;
+        font-family: 'Roboto','sans-serif';
+      }
+      #panel-console {
+        display: block;
+        position: relative;
+        top: 50px;
+        left: 23px;
+        z-index: 5;
+        width: 90%;
+        height: 25px;
+        background-color: #fff;
+        border: 1px solid #999;
+        text-align: center;
+        font-family: 'Roboto','sans-serif';
+      }
+    </style>
+
+    <script async defer
+    src="http://maps.google.cn/maps/api/js?key=yourKey&callback=initMap">
+    </script>
+    <script>
+      function initMap() {
+        var mapOptions = {
+          zoom: 4,
+          center: POS(131.044, -25.363),
+          mapTypeId: 'hybrid'
+        };
+
+        map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
+        info = new google.maps.InfoWindow({map: map});
+
+        locate();
+      }
+    </script>
+
+    <script>
+      // Get the object of the position.
+      function POS(x, y)
+      {
+        var position = {lat: y, lng: x};
+        return position;
+      }
+
+      function locate()
+      {
+        // Try HTML5 geolocation.
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+            var location = POS(position.coords.longitude, position.coords.latitude);
+
+            info.setPosition(location);
+            info.setContent('Location found.');
+            map.setCenter(location);
+            map.setZoom(15);
+          }, function() {
+            handleLocationError(true, info, map.getCenter());
+          });
+        } else {
+          // Browser doesn't support Geolocation
+          handleLocationError(false, info, map.getCenter());
+        }
+
+        function handleLocationError(browserHasGeolocation, info, pos) {
+          info.setPosition(pos);
+          info.setContent(
+            browserHasGeolocation ?
+            'Error: The Geolocation service failed.' :
+            'Error: Your browser doesn\'t support geolocation.'
+          );
+        }
+      }
+
+      function showPanel(isShown) {
+        if(isShown)
+        {
+          document.getElementById('panel').style['visibility'] = '';
+          document.getElementById('panel-show').style['visibility'] = 'hidden';
+        }
+        else
+        {
+          document.getElementById('panel').style['visibility'] = 'hidden';
+          document.getElementById('panel-show').style['visibility'] = '';
+        }
+      }
+
+      function run(code) {
+        try {
+          eval(code);
+        } catch(e) {
+          console.log(e);
+        } finally {
+          // document.getElementById('panel-console').value = "";
+        }
+      }
+    </script>
+
+    <script> //suger
+      function set(x, y) {
+        map.setCenter(POS(x, y));
+      }
+
+      function get() {
+        alert(map.getCenter());
+      }
+
+      function zoom(i) {
+        map.setZoom(i);
+      }
+
+      function me() {
+        locate();
+      }
+
+      function cls() {
+        console.clear();
+      }
+    </script>
+  </head>
+  <body>
+    <div id="panel" style="visibility: hidden;">
+      <input id="panel-close" type="button" value="×" onclick="showPanel(false);"></input>
+
+      <form onsubmit="run(document.getElementById('panel-console').value); return false;">
+        <input id="panel-console" type="input" value=""></input>
+      </form>
+    </div>
+    <input id="panel-show" type="button" value="panel" onclick="showPanel(true);"></input>
+
+    <div id="map"></div>
+  </body>
+</html>
